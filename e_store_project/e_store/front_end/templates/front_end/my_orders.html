@@ -1,0 +1,41 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="{% static 'front_end/home.css' %}">
+</head>
+<body>
+    <div class="homeCard">
+        <h2 class="heading2">MY Orders</h2>
+        <div class="books-container">
+          {% for data in orders.ordered_books %}
+         
+            <div class="productCard">
+                
+                    <p><span class="spanEl">Ordered Date: </span>  {{ data.ordered_date}} </p><br/>
+                    <p><span class="spanEl">Title:</span>  {{ data.name }}</p><br/>
+                    <img class="book_image" src="{{data.image}}" alt="{{field.name}}">
+                    <p><span class="spanEl">Price: ₹</span> {{ data.price }}</p><br/>
+                    <p><span class="spanEl">Quantity:</span>  {{ data.quantity }}</p><br/>
+                    <p><span class="spanEl">SubTotal: ₹</span>  {{ data.sub_total}} </p><br/>
+                    <p><span class="spanEl">Status: </span><span style="color: green;">{{ data.status}}</span></p><br/>
+                
+                <hr/>
+            </div>
+
+          {% endfor %}  
+        </div>
+    </div>
+    {% if  orders.ordered_books|length == 0 %}
+            <p style="color: red;">Your not places any order</p>
+    {% endif %}
+    <div>
+        <a href="{% url 'front_end:home_page' %}">
+            <button style="background-color: rgb(0, 60, 128); color: white; border-radius: 5px; font-weight: bold; border-color: grey; padding: 5px;">Go Back to Home Page</button>
+        </a>
+    </div>
+</body>
+</html>

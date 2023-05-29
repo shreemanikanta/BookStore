@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Page</title>
+  <link rel="stylesheet" href="{% static 'front_end/register.css' %}">
+</head>
+<body>
+  <div class="container">
+    <form method="post">
+      {% csrf_token %}
+      <h1>Registration</h1>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" >
+      <label for="first_name">First Name</label>
+      <input type="text" id="first_name" name="first_name" >
+      <label for="last_name">Last Name</label>
+      <input type="text" id="last_name" name="last_name" >
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" >
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" >
+      <label for="role">Role</label>
+      <select name="role" style="font-size: 18px; width:250px;" id="role">
+        {% for role in roles %}
+        <option value="{{role.id}}">{{role.role}}</option>
+        {% endfor %}
+      </select>
+      <br>
+      <input type="submit" value="Submit" >
+      <h3>Already have an account? login below</h3>
+      <a href="{% url 'front_end:login' %}"> Login</a>
+    </form>
+  </div>
+</body>
+</html>
+

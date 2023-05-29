@@ -1,0 +1,76 @@
+table, th, td {
+  border: 1px solid;
+}
+
+table {
+  width: 90%;
+}
+
+.table_div {
+  background-color: #FFFFFF;
+}
+
+.info-hide {
+  display: none;
+}
+
+.info-show {
+  display: block;
+}
+
+.productCard {
+  background-color: white;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #e4e7eb;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 25px;
+}
+
+.spanEl {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.book_image{
+  height: 400px;
+  width: 300px;
+  margin-bottom: 20px;
+} 
+
+.homeCard {
+  background: linear-gradient( rgb(88, 85, 85), rgb(219, 203, 206));
+  padding: 10px;
+}
+
+.heading2 {
+  color: wheat;
+  padding: 15px;
+  margin-top: 40PX;
+}
+
+.outofstock {
+  color: red;
+}
+
+.logout {
+  color: aqua;
+}
+
+.up {
+  cursor: pointer;
+}
+
+.books-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.search {
+  margin-top: 5px;
+  border-radius: 5px;
+}
+

@@ -1,0 +1,35 @@
+{% extends "front_end/home_page.html" %}
+{% load static%} 
+{% block content %}
+    <div class="homeCard">
+       
+        <h1 class="heading2">Search Results</h1> 
+        <a href="{% url 'front_end:home_page' %}">
+            <button style="background-color: rgb(0, 60, 128); color: white; border-radius: 5px; font-weight: bold; border-color: grey; padding: 5px;">⬅ </button>
+        </a>
+        <div class="books-container">
+            {% if data|length == 0%}
+                <p><b>Search Book Not Available</b></p>
+            {% else %}
+                {% for book in data %}
+                    
+                <div class="productCard">
+                    <p><span class="spanEl">Title:   </span>  {{ book.title }}</p><br/>
+                    <a href="{% url 'front_end:book_details' id=book.id %}">
+                        <div>
+                        <img class="book_image" src="{{book.image}}" alt="{{field.name}}">
+                        </div>
+                    </a>
+                    <span class="opacity-80" style="color: goldenrod; font-weight: bold;">₹ {{book.price|floatformat:2}}</span>
+
+                    {% if  book.quantity == 0 %}
+                        <p class="outofstock">Out of Stock</p>
+                    {% endif %}
+                    <hr/>
+                </div>
+
+                {% endfor %}  
+            {% endif %}
+        </div>
+  </div>  
+{% endblock %}

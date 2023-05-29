@@ -1,0 +1,76 @@
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'front_end/detailsstyle.css' %}">
+</head>
+
+<body>
+  <h1>Book Details</h1>
+  <div class="productCard">
+    <p><span class="spanEl">Title:</span> {{ data.title }}</p><br />
+    <div>
+      <img src="{{data.image}}" height="50%" alt="{{data.name}}">
+    </div>
+    <p><span class="spanEl">Description:</span> {{ data.description }}</p><br />
+    <p><span class="spanEl">Author:</span> {{ data.author }}</p><br />
+    <p><span class="spanEl">Available Quantity:</span> <span id="avl_qty">{{ data.quantity }}</span></p><br />
+    <p><span class="spanEl">Price: ₹</span> {{ data.price }}</p><br />
+    
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value={{ data.id }}>
+        <input type="hidden" name="price" value={{ data.price }}>
+        <input type="hidden" name="available_quantity" value={{ data.quantity }}>
+        {% if data.quantity == 0 %}
+        <p class="outofstock">Out of Stock</p>
+        {% endif %}
+        {% if data.quantity > 0 %}
+        {% if not request.session.role == 'Seller' %}
+          <label class="spanEl" for="qnty">Quantity : </label>
+          <span class="down" style="cursor:pointer;" onClick='decreaseCount(event, this)'>-</span>
+          <input type="text" value=1 name="quantity">
+          <span class="up" style="cursor:pointer;" onClick='increaseCount(event, this)'>+</span>
+          <p class="outofstock">{{message}}</p>
+          <div>
+          <br>
+          <input class="addtocart" type="submit" value="Add to cart">
+        {% endif %}
+        </div>
+        {% endif %}
+    </form>
+
+    <a href="{% url 'front_end:home_page' %}">Go Back</a>
+
+    <hr />
+  </div>
+</body>
+
+<script type="text/javascript"> 
+  function increaseCount(a, b) {
+    avl_qty = document.getElementById('avl_qty');
+    available_quantity = Number(avl_qty.textContent);
+    var input = b.previousElementSibling;
+    var value = parseInt(input.value, 10);
+    value = isNaN(value) ? 0 : value;
+    if (value < available_quantity) {
+      value++;
+      input.value = value;
+    }
+  }
+  function decreaseCount(a, b) {
+    var input = b.nextElementSibling;
+    var value = parseInt(input.value, 10);
+    if (value > 1) {
+      value = isNaN(value) ? 0 : value;
+      value--;
+      input.value = value;
+    }
+  }
+</script>
+
+</html>

@@ -1,0 +1,100 @@
+{% load static %}
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookStore</title> 
+    <link rel="stylesheet" href="{% static 'front_end/home.css' %}"> 
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" style="color: red;" href="{% url "front_end:home_page" %}"><b>BookStore</b></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              {% if  request.session.access_token and request.session.role == 'Seller' %}
+                <a class="nav-link" href="{% url "front_end:add_book" %}">Add Book</a>
+                <a class="nav-link" href="#">No. of added books: <span style="color:rgb(22, 2, 2);">{{count}}</span></a>
+              {% else %}
+                <a class="nav-link" href="{% url "front_end:cart" %}">Cart</a>
+              {% endif %}
+              <p>{{messages.info}}</p>
+            </div>
+          </div>
+          
+          <div class="collapse navbar-collapse" id="navbarText">
+            
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <form method="POST">
+                  {% csrf_token %}
+                  <input class="search" placeholder="  Search for book" type="text" name="search">
+                  <input type="submit" value="🔍">
+                </form>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: rgb(56, 53, 238);" href="#">Welcome, {{ first_name}}</a>
+              </li>
+              {% if  request.session.access_token %}
+                {% if not request.session.role == 'Seller' %}
+                  <a class="nav-link" href="{% url "front_end:my_orders" %}">My Orders</a>
+                {% endif %}
+                  {% if messages %}
+                        
+                    {% for message in messages %}
+                        <a {% if message.tags %} class="{{ message.tags }} nav-link"{% endif %} style="color: green;" href="#">{{ message }}</a>
+                    {% endfor %}
+              
+                  {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" style="color: red;" href="{% url 'front_end:logout' %}">Logout</a>
+                </li>
+              {%else%}
+                {% if messages %}
+                  {% for message in messages %}
+                    <a {% if message.tags %} class="{{ message.tags }} nav-link"{% endif %} style="color: red;" href="#">{{ message }}</a>
+                  {% endfor %}
+                {% endif %}
+                <li class="nav-item">
+                  <a class="nav-link" style="color: rgb(7, 136, 39);" href="{% url "front_end:login" %}">Login</a>
+                </li>
+              {% endif %}  
+            </ul>
+          </div>
+    </nav>
+    {% block content%}
+      <div class="homeCard">
+       
+        <h1 class="heading2">Books Available</h1> 
+        <div class="books-container">
+          {% for book in data %}
+         
+          <div class="productCard">
+              <p><span class="spanEl">Title:   </span>  {{ book.title }}</p><br/>
+              <a href="{% url 'front_end:book_details' id=book.id %}">
+                <div>
+                  <img class="book_image" src="{{book.image}}" alt="{{field.name}}">
+                </div>
+              </a>
+              <span class="opacity-80" style="color: goldenrod; font-weight: bold;">₹ {{book.price|floatformat:2}}</span>
+
+              {% if  book.quantity == 0 %}
+                <p class="outofstock">Out of Stock</p>
+              {% endif %}
+              <hr/>
+          </div>
+
+          {% endfor %}  
+        </div>
+      </div>  
+    {% endblock%}
+</body>
+</html>

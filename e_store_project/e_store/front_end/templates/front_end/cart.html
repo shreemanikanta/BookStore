@@ -1,0 +1,47 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>Cart</title>
+    <link rel="stylesheet" href="{% static 'book_store/cart.css' %}">
+</head>
+<body>
+    <h1>My Cart</h1>
+    <div>
+        {% for data in dataset.usercart_books %}
+            
+            <p><span class="spanEl">Title:</span>  {{ data.name }}</p><br/>
+            <img class="book_image" height="50%" src="{{data.image}}" alt="{{field.name}}">
+            <p><span class="spanEl">Price: ₹</span> {{ data.price }}</p><br/>
+            <p><span class="spanEl">Quantity:</span>  {{ data.quantity }}</p><br/>
+            <p><span class="spanEl">SubTotal: ₹</span>  {{ data.sub_total}} </p><br/> 
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="id" value= {{ data.id }}>
+                <input type="hidden" name="available_quantity" value={{ data.quantity }}>
+                <input style="background-color: red; color: white; border-radius: 5px; font-weight: bold; padding: 5px;"  type="submit"  value="Remove Book">
+                <hr/>
+            </form>
+                        
+        {% endfor %}
+        
+        {% if  dataset.usercart_books|length == 0 %}
+              <p style="color: red;">Your Cart is Empty</p>
+        {% endif %}
+        
+    </div>
+    <div>
+        {% if dataset.usercart_books|length > 0 %}
+            <p><span class="spanEl"><b>Total cart price:</b> ₹</span>  {{ dataset.grand_total}} </p><br/>
+            <a href="{% url 'front_end:invoice' %}">
+                <button style="background-color: green; color: white; border-radius: 5px; font-weight: bold; border-color: grey; padding: 5px;" href="#" >Proceed to Checkout</button>
+            </a>    
+        {% endif %} 
+        <a href="{% url 'front_end:home_page' %}">
+            <button style="background-color: rgb(0, 60, 128); color: white; border-radius: 5px; font-weight: bold; border-color: grey; padding: 5px;">Continue to Shop</button>
+        </a>
+    </div>
+</body>

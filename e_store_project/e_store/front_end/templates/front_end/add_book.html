@@ -1,0 +1,57 @@
+{% load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'front_end/add_book.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'front_end/script.js' %}"></script>
+    <title>Add Book</title>
+</head>
+<body>
+    <h1>ADD BOOK TO STORE</h1>
+    <form method="POST"   enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" >
+        <label for="description">Description</label><br/>
+        <textarea type="textarea" id="description" name="description" ></textarea><br/>
+        <label for="author">Author</label>
+        <input type="text" id="author" name="author" >
+        <label for="quantity">Quantity</label>
+        <input type="text" id="quantity" name="quantity" >
+        <label for="price">Price</label>
+        <input type="text" id="price" name="price" >
+        <label for="role">Book Language</label>
+        <select name="language" id="language">
+            {% for language in languages %}
+            <option value="{{language.id}}">{{language.name}}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <label for="image">Image</label>
+        <input type="file" id="image" name="image" >
+        {% if error_message %}
+        <div class="error">
+            {% for error in error_message.image %}
+                {% for message in error_message.image %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <br/>    
+        <hr/>
+        <div>
+            <input type="submit"  id="submit_form" name="Submit">
+        </div>
+    </form>
+    <ul>
+        <li>
+            <a href="{% url "front_end:home_page" %}"> Go back to home page</a>
+        </li>
+    </ul>
+</body>
+</html>
